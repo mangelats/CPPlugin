@@ -3,6 +3,7 @@
 
 #include "plugin_metabase.hpp"
 #include "interface_base.hpp"
+#include "export_plugin.hpp"
 #include <type_traits>
 using std::is_base_of;
 
