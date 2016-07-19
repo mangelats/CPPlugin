@@ -8,4 +8,4 @@ The main project designs an interface for the plugins to call to and all the eve
 It works by compiling the plugin into a dynamic shared library (.dll/.so) which the main program can dynamically load.
 
 ## Security warning
-The plugin will be loaded with the same permissions as the process that load it. Like a program you have to trust the developer which made this plugin before using it.
+The plugin will be loaded with the same permissions as the process that loads it. Like a program you install, you should trust the developer who made this plugin if you want to use it.
