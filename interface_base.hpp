@@ -1,5 +1,5 @@
-#ifndef INTERFACE_BASE_HPP
-#define INTERFACE_BASE_HPP
+#ifndef CPPLUGIN_INTERFACE_BASE_HPP
+#define CPPLUGIN_INTERFACE_BASE_HPP
 
 #include "utils/version.hpp"
 
