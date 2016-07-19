@@ -11,10 +11,12 @@ namespace cpplugin {
 	template<class I>
 	class PluginBase : public PluginMetabase {
 		static_assert(is_base_of<InterfaceBase, I>::value, "The template parameter must be a child of cpplugin::InterfaceBase.");
+	protected:
+		using Interface_t = I;
 	public:
 		virtual ~PluginBase() {}
-		virtual void load(I *) {}
-		virtual void unload() {}
+		virtual void loaded(I *) {}
+		virtual void unloaded() {}
 	};
 }
 

@@ -27,14 +27,19 @@ namespace cpplugin {
 		const char * (CPPLUGIN_DYNAMIC_FUNCTION * CPPLUGIN_INTERFACE_NAME)();
 		const Version (CPPLUGIN_DYNAMIC_FUNCTION * CPPLUGIN_VERSION)();
 
-		// Both Widnows and POSIX compilant OS use void * as a dynamic library type
-		void * _library;
+
+		#ifdef _WIN32
+			HMODULE _library;
+		#else
+			void * _library;
+		#endif
 	};
 
 
 	template<class Interface, class Plugin>
 	DynamicPluginLoader<Interface, Plugin>::DynamicPluginLoader(Path path, Interface * i) : 
-		_path{path}, _plugin{nullptr}, CPPLUGIN_CONSTRUCTOR{nullptr}, CPPLUGIN_DESTRUCTOR{nullptr}, CPPLUGIN_VERSION{nullptr} {
+	_path{path}, _plugin{nullptr},
+	CPPLUGIN_CONSTRUCTOR{nullptr}, CPPLUGIN_DESTRUCTOR{nullptr}, CPPLUGIN_INTERFACE_NAME{nullptr}, CPPLUGIN_VERSION{nullptr} {
 		_library = CPPLUGIN_LOAD_LIB(_path);
 		if (_library) {
 			CPPLUGIN_GET_DYNAMIC_FUNCTION(_library, CPPLUGIN_CONSTRUCTOR);
@@ -44,7 +49,7 @@ namespace cpplugin {
 
 			if (isVersionCompatible()) {
 				_plugin = reinterpret_cast<Plugin *>(CPPLUGIN_CONSTRUCTOR());
-				_plugin->load(i);
+				_plugin->loaded(i);
 			}
 		}
 	}
@@ -52,7 +57,7 @@ namespace cpplugin {
 	template<class Interface, class Plugin>
 	DynamicPluginLoader<Interface, Plugin>::~DynamicPluginLoader() {
 		if (_plugin != nullptr) {
-			_plugin->unload();
+			_plugin->unloaded();
 			CPPLUGIN_DESTRUCTOR(_plugin);
 		}
 		if (_library != nullptr)
@@ -78,7 +83,7 @@ namespace cpplugin {
 	template<class Interface, class Plugin>
 	void DynamicPluginLoader<Interface, Plugin>::reload(Interface * i) {
 		if (_plugin != nullptr) {
-			_plugin->unload();
+			_plugin->unloaded();
 			CPPLUGIN_DESTRUCTOR(_plugin);
 			_plugin = nullptr;
 		}
@@ -88,6 +93,7 @@ namespace cpplugin {
 
 		CPPLUGIN_CONSTRUCTOR = nullptr;
 		CPPLUGIN_DESTRUCTOR = nullptr;
+		CPPLUGIN_INTERFACE_NAME = nullptr;
 		CPPLUGIN_VERSION = nullptr;
 
 		_library = CPPLUGIN_LOAD_LIB(_path);
@@ -99,7 +105,7 @@ namespace cpplugin {
 
 			if (isVersionCompatible()) {
 				_plugin = reinterpret_cast<Plugin *>(CPPLUGIN_CONSTRUCTOR());
-				_plugin->load(i);
+				_plugin->loaded(i);
 			}
 		}
 

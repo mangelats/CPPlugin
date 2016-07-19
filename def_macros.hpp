@@ -17,7 +17,7 @@
 
 		#define CPPLUGIN_LOAD_LIB(path) LoadLibrary(path)
 		#define CPPLUGIN_FREE_LIB(lib) FreeLibrary(lib)
-		#define CPPLUGIN__GET_DYNAMIC_FUNCTION(lib, func) func = reinterpret_cast<decltype(func)>(GetProcAddress(lib, #func))
+		#define _CPPLUGIN_GET_DYNAMIC_FUNCTION(lib, func) func = reinterpret_cast<decltype(func)>(GetProcAddress(lib, #func))
 		#define CPPLUGIN_GET_DYNAMIC_FUNCTION(lib, func) _CPPLUGIN_GET_DYNAMIC_FUNCTION(lib, func)
 
 		#ifndef CPPLUGIN_MAIN
