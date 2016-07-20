@@ -32,7 +32,7 @@
 
 		#include <dlfcn.h>
 		namespace cpplugin {
-			char const *;
+			using Path = char const *;
 		}
 
 		#define CPPLUGIN_LOAD_LIB(path) dlopen(path, RTLD_LAZY)

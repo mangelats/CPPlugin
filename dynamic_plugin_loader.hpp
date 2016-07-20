@@ -5,6 +5,8 @@
 #include "plugin_base.hpp"
 #include "def_macros.hpp"
 
+#include <cstring>
+
 namespace cpplugin {
 	template<class Interface, class Plugin>
 	class DynamicPluginLoader {
